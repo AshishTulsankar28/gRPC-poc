@@ -1,0 +1,35 @@
+syntax = "proto3";
+package com.example.grpc;
+
+
+/*Represents request payload
+*Each message attribute is strongly typed & tag number is unique within the message*/
+message HelloRequest {
+
+  string name = 1;
+  // repeated - List
+  repeated string hobbies = 2;
+  
+  // See more basic types like Enum, Map - https://developers.google.com/protocol-buffers/docs/proto3
+}
+
+// Represent Response payload
+message HelloResponse {
+  string greeting = 1;
+}
+
+// Defining a Service, a Service can have multiple RPC operations
+service GreetingService {
+
+  //Simple rpc call as a typical request response model
+  rpc greeting(HelloRequest) returns (HelloResponse);
+  
+  //Server-side streaming RPC 
+  rpc responsiveGreets(HelloRequest) returns (stream HelloResponse);
+  
+  //Client-side streaming RPC
+  rpc requestingGreets(stream HelloRequest) returns (HelloResponse);
+  
+  //Bidirectional streaming RPC
+  rpc bidirGreets(stream HelloRequest) returns (stream HelloResponse);
+}
